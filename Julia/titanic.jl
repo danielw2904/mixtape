@@ -1,12 +1,13 @@
-using Chain, HTTP, Queryverse, Statistics
+using Chain, DataFrames, FileIO, HTTP, Statistics
 
-file = "https://raw.github.com/scunning1975/mixtape/master/titanic.dta"
+titanic = "https://raw.github.com/scunning1975/mixtape/master/titanic.dta" |>
+    HTTP.download |>
+    load |>
+    DataFrame
 
-titanic = @chain load(HTTP.download(file)) begin
-    DataFrame()
-end 
-insertcols!(titanic, :d => ifelse.((titanic.class .== 1), 1, 0))
+insertcols!(titanic, :d => titanic.class .== 1)
 
+titanic
 ey1 = @chain titanic begin
     filter(:d => isequal(1), _)
     _[:, :survived]
