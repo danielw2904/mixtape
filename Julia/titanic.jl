@@ -7,7 +7,6 @@ titanic = "https://raw.github.com/scunning1975/mixtape/master/titanic.dta" |>
 
 insertcols!(titanic, :d => titanic.class .== 1)
 
-titanic
 ey1 = @chain titanic begin
     filter(:d => isequal(1), _)
     _[:, :survived]
