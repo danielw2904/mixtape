@@ -1,17 +1,35 @@
 using Chain, 
       DataFrames, 
       FileIO, 
-      GLM,
-      HTTP
+      FixedEffectModels,
+      HTTP,
+      RegressionTables
      
-
 yule = "https://raw.github.com/scunning1975/mixtape/master/yule.dta" |>
     HTTP.download |>
     load |>
     DataFrame
 
 
-yule_lm = lm(@formula(paup ~ outrelief + old + pop), yule)
+yule_lm = reg(yule, @formula(paup ~ outrelief + old + pop))                   # incorrect degrees of freedom (known issue)
+
+regtable(yule_lm, regression_statistics = [:nobs, :r2, :adjr2, :f, :p, :dof]) # correct values
+
+
+##### Alternative code using GLM #####
+
+using Chain, 
+      DataFrames, 
+      FileIO, 
+      GLM,
+      HTTP     
+
+yule = "https://raw.github.com/scunning1975/mixtape/master/yule.dta" |>
+    HTTP.download |>
+    load |>
+    DataFrame
+
+yule_lm = reg(yule, @formula(paup ~ outrelief + old + pop))
 
 # the summary() function workaround
 
