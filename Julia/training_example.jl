@@ -10,12 +10,12 @@ end
 
 @chain skipmissing(training_example.age_treat) begin
     fit(Histogram, collect(_), nbins = 10)
-    plot(_, labels = false)
+    plot(labels = false)
 end
 
 @chain skipmissing(training_example.age_control) begin
     fit(Histogram, collect(_), nbins = 10)
-    plot(_, labels = false)
+    plot(labels = false)
 end
 
 
