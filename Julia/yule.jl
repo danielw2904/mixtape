@@ -4,10 +4,14 @@ using Chain,
       GLM,
       HTTP     
 
-yule = "https://raw.github.com/scunning1975/mixtape/master/yule.dta" |>
-    HTTP.download |>
-    load |>
-    DataFrame
+function read_data(df) 
+    path = "https://raw.github.com/scunning1975/mixtape/master/" * df
+    @chain path begin
+        HTTP.download
+        load
+        DataFrame
+    end
+end
 
 yule_lm = lm(@formula(paup ~ outrelief + old + pop), yule);
 

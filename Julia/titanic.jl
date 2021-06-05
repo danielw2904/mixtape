@@ -1,10 +1,19 @@
-using Chain, DataFrames, FileIO, HTTP, Statistics
+using Chain, 
+      DataFrames, 
+      FileIO, 
+      HTTP, 
+      Statistics
 
-titanic = "https://raw.github.com/scunning1975/mixtape/master/titanic.dta" |>
-    HTTP.download |>
-    load |>
-    DataFrame
+function read_data(df) 
+    path = "https://raw.github.com/scunning1975/mixtape/master/" * df
+    @chain path begin
+        HTTP.download
+        load
+        DataFrame
+    end
+end
 
+titanic = read_data("titanic.dta")
 insertcols!(titanic, :d => titanic.class .== 1)
 
 ey1 = @chain titanic begin
