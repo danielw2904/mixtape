@@ -13,8 +13,7 @@ function read_data(df)
     end
 end
 
-training_bias_reduction = read_data("training_bias_reduction.dta")
-@chain training_bias_reduction begin
+training_bias_reduction = @chain read_data("training_bias_reduction.dta") begin
   insertcols!(_, :Y1 => ifelse.(_.Unit .<= 4, _.Y, missing))
   insertcols!(_, :Y0 => [4,0,5,1,4,0,5,1])  
   
