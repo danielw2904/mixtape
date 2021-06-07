@@ -17,8 +17,5 @@ lm_2 = reg(tb, @formula(wage ~ female + occupation))
 lm_3 = reg(tb, @formula(wage ~ female + occupation + ability))
 
 regtable(lm_1, lm_2, lm_3, 
-         regression_statistics = [:nobs, :r2, :adjr2, :dof, :f, :p])
-
-# need to rename the model names from (1) (2) (3) to
-# "Biased Unconditional", "Biased" and "Biased Conditional", respectively.
-# How???
+         regression_statistics = [:nobs, :r2, :adjr2, :dof, :f, :p],
+         groups = ["Biased Unconditional", "Biased", "Biased Conditional"])

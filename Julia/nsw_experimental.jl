@@ -41,7 +41,12 @@ end
 
 insertcols!(nsw_dw, :y0 => mean0)
 
-ate = unique(nsw_dw.y1 - nsw_dw.y0)
+ate = @chain nsw_dw begin 
+    groupby(_, :treat) 
+    combine(:re78 => mean => :y) 
+    diff(_.y) 
+    only 
+end
 
 nsw_dw = @chain nsw_dw begin
     subset(_, :treat => ByRow(==(1)))
