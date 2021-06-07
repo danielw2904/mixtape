@@ -10,5 +10,6 @@ plot(dat,
      layer(x=:x, y=:y2, Geom.vline(color = ["grey"], style=:dash), xintercept=[50]),
      Guide.colorkey(labels=["0","1"]),
      Guide.xlabel("Test score (X)"),
-     Guide.ylabel("Potential Outcome (Y)")
+     Guide.ylabel("Potential Outcome (Y)"),
+     Theme(highlight_width = 0pt)
 )
