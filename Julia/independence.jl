@@ -2,7 +2,7 @@ using Chain,
       DataFrames,
       Random,
       Statistics
-Random.seed!(1)
+
 function gap()
     df = DataFrame(y1 = [7, 5, 5, 7, 4, 10, 1, 5, 3, 9], 
                    y0 = [1, 6, 1, 8, 2, 1, 10, 6, 7, 8],

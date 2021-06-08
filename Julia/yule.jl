@@ -1,21 +1,21 @@
 using Chain, 
       DataFrames, 
       FileIO, 
-      GLM,
-      HTTP     
+      FixedEffectModels,
+      HTTP,
+      RegressionTables
 
-yule = "https://raw.github.com/scunning1975/mixtape/master/yule.dta" |>
-    HTTP.download |>
-    load |>
-    DataFrame
+function read_data(df) 
+    path = "https://raw.github.com/scunning1975/mixtape/master/" * df
+    @chain path begin
+        HTTP.download
+        load
+        DataFrame
+    end
+end
 
-yule_lm = lm(@formula(paup ~ outrelief + old + pop), yule);
-
-# the summary() function workaround
-
-yule_lm                                      # print model            
-dof_residual(yule_lm)                        # degrees of freedom
-round(r2(yule_lm), digits = 4)               # r^2
-round(adjr2(yule_lm), digits = 4)            # r^2 adjusted
-null_model = lm(@formula(paup ~ 1), yule);   # create null model
-ftest(yule_lm.model, null_model.model)       # get the F value and significance
+yule_lm = @chain read_data("yule.dta") begin
+    reg(_, @formula(paup ~ outrelief + old + pop));
+end
+ 
+regtable(yule_lm, regression_statistics = [:nobs, :r2, :adjr2, :dof, :f, :p])
